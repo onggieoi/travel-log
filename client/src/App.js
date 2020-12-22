@@ -3,17 +3,14 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 
 import { listLogEntries } from './API';
 import LogEntryForm from './LogEntryForm';
+import defaultConfig from './constants/mapConfig';
 
 const App = () => {
   const [logEntries, setLogEntries] = useState([]);
   const [showPopup, setShowPopup] = useState({});
   const [addEntryLocation, setAddEntryLocation] = useState(null);
   const [viewport, setViewport] = useState({
-    width: '100vw',
-    height: '100vh',
-    latitude: 37.6,
-    longitude: -95.665,
-    zoom: 3
+    zoom: 2
   });
 
   const getEntries = async () => {
@@ -34,13 +31,16 @@ const App = () => {
   };
 
   return (
+    <>
     <ReactMapGL
       {...viewport}
-      mapStyle="mapbox://styles/thecjreynolds/ck117fnjy0ff61cnsclwimyay"
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      {...defaultConfig}
       onViewportChange={setViewport}
       onDblClick={showAddMarkerPopup}
     >
+    <div style={{display: 'flex', width: '100vw', position: 'absolute', top: 0, left: 0}}>
+        <div style={{margin: '0 auto', background: 'white',}}>hello</div>
+      </div>
       {
         logEntries.map(entry => (
           <React.Fragment key={entry._id}>
@@ -137,6 +137,7 @@ const App = () => {
         ) : null
       }
     </ReactMapGL>
+    </>
   );
 }
 
